@@ -1,0 +1,26 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<a href="{% url 'feed:create' %}"><button type="button" class="btn btn-primary">피드쓰기</button></a>
+
+{% for feed in object_list %}
+<div class="card" style="width: 18rem;">
+    {% for image in feed.image_set.all %}
+    <img src="{{image.image_url}}" class="card-img-top" alt="...">
+    {% endfor %}
+    <div class="card-body">
+      <h5 class="card-title">{{ feed.title }}</h5>
+      <p class="card-text">{{ feed.description }}</p>
+      <p class="card-text">{{ feed.modify_dt }}</p>
+      <h6 class="card-title">{% for tag in feed.tags.all %}
+        <a href="{% url 'feed:tagged_object_list' tag.name %}">#{{ tag.name }}</a>
+        {% endfor %}</h6>
+      <p>좋아요{{ feed.likes.count }}개</p><br>
+      <a href="{% url 'feed:feed_update' feed.id %}" class="btn btn-success">수정하기</a>
+      <a href="{% url 'feed:feed_delete' feed.id %}" class="btn btn-danger">삭제하기</a>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

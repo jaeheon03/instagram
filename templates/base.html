@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>{% block title %}Django Web Programming{% endblock %}</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+</head>
+<body style="padding-top:90px;">{% block extra-style %}{% endblock %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <span class="navbar-brand mx-5 mb-0 font-weight-bold font-italic">Instagram</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item mx-1 btn btn-primary">
+                    <a class="nav-link text-white" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item mx-1 btn btn-primary">
+                    <a class="nav-link text-white" href="{% url 'feed:index' %}">Feeds</a></li>
+                <li class="nav-item mx-1 btn btn-primary">
+                    <a class="nav-link text-white" href="{% url 'feed:user_feed' %}">MyFeeds</a></li>
+                <li class="nav-item mx-1 btn btn-primary">
+                    <a class="nav-link text-white" href="{% url 'feed:tag_cloud' %}">Tags</a></li>
+            </ul>
+    
+            <form class="form-inline my-2" action="#" method="post"> {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="global search" name="search_word">
+            </form>
+    
+            <ul class="navbar-nav ml-5 mr-5">
+                <li class="nav-item dropdown mx-1 btn btn-primary">
+                    {% if user.is_active %}
+                    <a class="nav-link dropdown-toggle text-white" href="#" data-toggle="dropdown">
+                        <i class="fas fa-user" aria-hidden="true"></i> {% firstof user.get_short_name user.get_username %} </a>
+                    <div class="dropdown-menu">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item">Logout</button>
+                        </form>
+                        <a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a>
+                    </div>
+                    {% else %}
+                    <a class="nav-link dropdown-toggle text-white" href="#" data-toggle="dropdown">
+                        <i class="fas fa-user" aria-hidden="true"></i> Anonymous </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                        <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+                    </div>
+                    {% endif %}
+                </li>
+            </ul>
+    
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-m-12">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    
+    
+    {% block footer %}{% endblock %}
+    
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/c998a172fe.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    {% block extra-script %}{% endblock %}
+
+</body>
+</html>
